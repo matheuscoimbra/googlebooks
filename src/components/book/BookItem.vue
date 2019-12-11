@@ -4,8 +4,12 @@
             v-if="book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail"
             class="text-center pt-3"
         >
-            <v-img  :src="book.volumeInfo.imageLinks.smallThumbnail" contain
-                    class="grey lighten-1" aspect-ratio="1.4"/>
+            <v-img
+                :src="book.volumeInfo.imageLinks.smallThumbnail"
+                contain
+                class="grey lighten-1"
+                aspect-ratio="1.4"
+            />
         </div>
 
         <v-card-title>
@@ -27,6 +31,14 @@
                     @click="goToPreview(book)"
                 >
                     Ver Preview
+                </v-btn>
+                <v-btn
+                    class="ma-2"
+                    text
+                    icon
+                    @click="favoritar"
+                >
+                    <v-icon color="red">mdi-cards-heart</v-icon>
                 </v-btn>
             </v-flex>
         </v-card-actions>
@@ -53,6 +65,11 @@
         computed: {
             entryPageUrl() {
                 return `/book/${this.book.id}`;
+            },
+        },
+        methods: {
+            favoritar() {
+                alert('salvar em favoritos');
             },
         },
     };

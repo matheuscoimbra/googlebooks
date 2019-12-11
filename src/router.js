@@ -18,5 +18,7 @@ const routes = [
 ];
 
 export default new Router({
+    mode: 'history',
+    base: decodeURI('/'),
     routes,
 });
