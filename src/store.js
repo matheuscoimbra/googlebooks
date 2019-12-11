@@ -12,8 +12,12 @@ export default new Vuex.Store({
             text: '',
             type: '',
         },
+        textSearch: '',
     },
     mutations: {
+        setTextSearch(state, payload) {
+            state.textSearch = payload;
+        },
         setAuthToken(state, payload) {
             window.localStorage.authToken = payload;
             state.authToken = payload;
@@ -45,6 +49,9 @@ export default new Vuex.Store({
         },
         getLogged(state) {
             return state.logged;
+        },
+        getSearch(state) {
+            return state.textSearch;
         },
     },
 });

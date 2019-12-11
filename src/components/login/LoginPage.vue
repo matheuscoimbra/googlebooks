@@ -2,38 +2,38 @@
     <v-container fluid>
         <v-row justify="center">
             <v-col
-                    cols="12"
-                    md="4"
-                    lg="3"
-                    class="text-center"
+                cols="12"
+                md="4"
+                lg="3"
+                class="text-center"
             >
                 <h6 class="display-1 text-uppercase">Login</h6>
 
                 <v-text-field
-                        v-model="userId"
-                        label="ID do Usuário"
+                    v-model="userId"
+                    label="ID do Usuário"
                 />
 
                 <v-text-field
-                        v-model="token"
-                        label="Token"
+                    v-model="token"
+                    label="Token"
                 />
 
                 <v-btn
-                        depressed
-                        dark
-                        block
-                        color="primary"
-                        class="mb-2"
-                        @click="login"
+                    depressed
+                    dark
+                    block
+                    color="primary"
+                    class="mb-2"
+                    @click="login"
                 >
                     Login
                 </v-btn>
 
                 <v-btn
-                        text
-                        color="secondary"
-                        @click="loginAsGuest"
+                    text
+                    color="secondary"
+                    @click="loginAsGuest"
                 >
                     Entrar como Visitante
                 </v-btn>
@@ -47,15 +47,14 @@
         name: 'LoginPage',
         data() {
             return {
-                userId: '',
-                token: '',
+                userId: '108012498928503515626',
+                token: 'AIzaSyAslcPe9rscHhpwtTi0kqbKmQkvfdvlAMw',
             };
         },
         methods: {
             login() {
                 if (this.userId && this.token) {
                     this.$store.commit('setAuthToken', this.token);
-                    console.log(this.$store.getters.getAuthToken)
                     this.$store.commit('setUserId', this.userId);
                     this.$router.push('/book');
                 } else {
@@ -71,4 +70,5 @@
 </script>
 
 <style scoped>
+
 </style>

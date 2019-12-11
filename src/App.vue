@@ -1,24 +1,34 @@
 <template>
     <v-app>
-        <v-container>
-            <login-page/>
-        </v-container>
+        <app-header />
+
+        <v-content>
+            <router-view />
+        </v-content>
+
+        <feedback />
     </v-app>
 </template>
 
 <script>
-    import HelloWorld from './components/HelloWorld';
-    import LoginPage from './components/login/LoginPage';
+    import apiConfig from './components/api/apiConfig';
+
+    import AppHeader from './components/header/AppHeader.vue';
+    import Feedback from './components/feedback/Feedback.vue';
 
     export default {
         name: 'App',
+        components: { AppHeader, Feedback },
+        mixins: [apiConfig],
+        created() {
+            this.createInterceptors();
 
-        components: {
-            HelloWorld, LoginPage,
+            if (window.localStorage.authToken && window.localStorage.userId) {
+                this.$store.commit('setAuthToken', window.localStorage.authToken);
+                this.$store.commit('setUserId', window.localStorage.userId);
+            } else {
+                this.$router.push('/');
+            }
         },
-
-        data: () => ({
-            //
-        }),
     };
 </script>
