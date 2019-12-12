@@ -68,28 +68,40 @@
                     class="pa-4 pt-6"
                     :lazy-validation="lazy"
                 >
+
+                    <v-text-field
+                            v-model="nome"
+                            filled
+                            :counter="10"
+                            :rules="[rules.length]"
+                            color="deep-purple"
+                            label="Nome"
+                    />
+
                     <v-text-field
                             v-model="email"
                             :rules="[rules.email]"
                             filled
                             color="deep-purple"
-                            label="Email address"
+                            label="Email"
                             type="email"
                     />
+
+
 
                     <v-text-field
                         v-model="phone"
                         filled
                         color="deep-purple"
-                        label="Phone number"
+                        label="Teledone"
                     />
 
                     <v-text-field
                             v-model="password"
-                            :rules="[rules.password]"
+                            :rules="[rules.password, rules.length]"
                             filled
                             color="deep-purple"
-                            counter="6"
+                            :counter="10"
                             label="Password"
                             style="min-height: 96px"
                             type="password"
@@ -124,6 +136,8 @@
 </template>
 
 <script>
+    import firebase from 'firebase'
+
     export default {
         name: 'LoginPage',
         data() {
@@ -141,7 +155,7 @@
                 phone: undefined,
                 rules: {
                     email: v => (v || '').match(/@/) || 'Informe um email válido',
-                    length: len => v => (v || '').length >= len || `Tamanho necessário incorreto ${len}`,
+                    length: v => (v && v.length <= 10) || 'Tamanho incorreto',
                     password: v => (v || '').match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/)
                         || 'A senha deve conter uma letra maiúscula, um caractere numérico e um caractere especial',
                     required: v => !!v || 'This field is required',
@@ -150,7 +164,26 @@
         },
         methods: {
             registrar() {
-                alert('registrar');
+                firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+                    .then((created) => {
+                        created.user.sendEmailVerification().then((user) => {
+                            firebase.firestore().collection("user").doc(created.user.uid).set({
+                                name: this.nome,
+                                email: this.email,
+                            }).then((res)=>{
+                                console.log("cadastrando",created)
+                                this.$store.commit('showSuccessMessage', 'Cadastro realizado com sucesso!');
+                                this.$store.commit('setAuthToken', this.password);
+                                this.$store.commit('setUserId', this.email);
+                                this.$router.push('/book');
+
+                            }).catch((err) => {
+                                this.$store.commit('showErrorMessage', 'Erro ao cadastrar');
+                            })
+                        });
+                    }).catch((error) => {
+                    this.$store.commit('showErrorMessage', 'Erro ao cadastrar');
+                });
             },
             login() {
                 if (this.senha && this.token) {
