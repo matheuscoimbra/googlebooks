@@ -23,6 +23,13 @@
                 Minha Coleção
             </v-btn>
             <v-btn
+                    v-if="$store.state.use"
+                    text
+                    @click="goToTeste"
+            >
+                Teste
+            </v-btn>
+            <v-btn
                 text
                 @click="logout"
             >
@@ -52,6 +59,9 @@
             },
             goToCollection() {
                 this.$router.push('/library');
+            },
+            goToTeste() {
+                this.$router.push('/teste');
             },
             logout() {
                 localStorage.clear();

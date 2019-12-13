@@ -11,7 +11,7 @@ export default {
                 if (newConfig.url.indexOf('?') !== -1) newConfig.url += '&';
                 else newConfig.url += '?';
 
-                newConfig.url += `key=${this.$store.state.authToken}`;
+                newConfig.url += `key=AIzaSyCuwdyPH6wH8lZovBJJT6Gb_hwnef1Mlic`;
 
                 return newConfig;
             }, () => {
