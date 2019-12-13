@@ -5,7 +5,7 @@
         flat
         color="secondary"
     >
-        <v-toolbar-title>Google Books</v-toolbar-title>
+        <v-toolbar-title>Google Books {{this.user?'-'+this.user:''}}</v-toolbar-title>
 
         <v-spacer />
         <v-toolbar-items v-if="$store.state.logged">
@@ -16,7 +16,7 @@
                 Livros
             </v-btn>
             <v-btn
-                v-if="$store.state.authToken"
+                v-if="$store.state.use"
                 text
                 @click="goToCollection"
             >
@@ -33,8 +33,19 @@
 </template>
 
 <script>
+    import {userKey} from "../../global";
+
     export default {
         name: 'AppHeader',
+        data() {
+            return {
+                user: '',
+            };
+        },
+        created() {
+            this.user = this.$store.state.usuario.name
+
+        },
         methods: {
             goToBookList() {
                 this.$router.push('/book');
@@ -43,8 +54,10 @@
                 this.$router.push('/library');
             },
             logout() {
-                this.$store.commit('setAuthToken', '');
-                this.$store.commit('setUserId', '');
+                localStorage.clear();
+                this.$store.state.logged = false;
+                this.$store.state.use = false;
+                this.$store.state.usuario = {};
                 this.$router.push('/');
             },
         },

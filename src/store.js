@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import firebase from 'firebase';
+import {userKey} from "./global";
 
 Vue.use(Vuex);
 
@@ -13,8 +15,32 @@ export default new Vuex.Store({
             type: '',
         },
         textSearch: '',
+        use: false,
+        usuario: {},
     },
     mutations: {
+        addUser(state, usuario) {
+            console.log('LOGIN', usuario);
+            if (usuario) {
+                console.log(usuario.user);
+                firebase.firestore().collection('user').doc(usuario.user.uid).get()
+                    .then((res) => {
+                        console.log('res store', res.data());
+                        state.logged = true;
+                        state.usuario = res.data();
+                        state.use = true;
+                        localStorage.setItem(userKey, JSON.stringify(usuario));
+                    })
+                    .catch((err) => {
+                        console.log('erro ao adc');
+                    });
+            } else {
+                state.isMenuVisible = false;
+            }
+        },
+        setUser(state, payload) {
+            state.use = payload;
+        },
         setTextSearch(state, payload) {
             state.textSearch = payload;
         },

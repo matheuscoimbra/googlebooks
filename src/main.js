@@ -7,6 +7,9 @@ import router from './router';
 
 Vue.config.productionTip = false;
 
+const firebaseConfig = {
+    
+};
 
 firebase.initializeApp(firebaseConfig);
 

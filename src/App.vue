@@ -12,7 +12,7 @@
 
 <script>
     import apiConfig from './components/api/apiConfig';
-
+    import { userKey } from './global';
     import AppHeader from './components/header/AppHeader.vue';
     import Feedback from './components/feedback/Feedback.vue';
 
@@ -22,10 +22,13 @@
         mixins: [apiConfig],
         created() {
             this.createInterceptors();
-
-            if (window.localStorage.authToken && window.localStorage.userId) {
-                this.$store.commit('setAuthToken', window.localStorage.authToken);
-                this.$store.commit('setUserId', window.localStorage.userId);
+            const json = localStorage.getItem(userKey);
+            const userData = JSON.parse(json);
+            console.log('STORAGE', userData);
+            if (userData) {
+                this.$store.commit('addUser',userData);
+                this.$store.commit('setUser', true);
+                this.$store.commit('setLogged', true);
             } else {
                 this.$router.push('/');
             }
